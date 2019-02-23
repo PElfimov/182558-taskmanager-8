@@ -1,8 +1,8 @@
 const FILTERS_NAME = [`all`, `overdue`, `today`, `favorites`, `repeating`, `tags`, `archive`];
 const RANDOM_MAX = 10;
 
-import makeFilter from `./make-filter.js`;
-import makeTask from `./make-task.js`;
+import makeFilter from './make-filter.js';
+import makeTask from './make-task.js';
 
 const makeFilterCount = (count) => {
   let filterArray = [0];
