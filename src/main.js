@@ -29,7 +29,7 @@ const boardTasks = document.querySelector(`.board__tasks`);
 const makeTasks = (count) => {
   removeCard();
   for (let i = 1; i <= count; i++) {
-    boardTasks.insertAdjacentHTML(`afterBegin`, makeTask(i));
+    boardTasks.insertAdjacentHTML(`beforeEnd`, makeTask(i));
   }
 };
 

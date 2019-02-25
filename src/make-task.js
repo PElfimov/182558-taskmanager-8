@@ -1,4 +1,37 @@
-export default (number) => `<article class="card card--pink card--repeat">
+export default (number) => {
+  const DAY = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
+  const COLOR = [`black`, `yellow`, `blue`, `green`, `pink`];
+  const repeatDayInput = (nameDay) => `<input
+      class="visually-hidden card__repeat-day-input"
+      type="checkbox"
+      id="repeat-${nameDay}-${number}"
+      name="repeat"
+      value="${nameDay}"/>
+      <label class="card__repeat-day" for="repeat-${nameDay}-${number}"
+      >${nameDay}</label
+      >`;
+  let sumRepeatDayInput = ``;
+  DAY.forEach((elem) => {
+    sumRepeatDayInput += repeatDayInput(elem);
+  });
+
+  const cardColorInput = (color) => `<input
+      type="radio"
+      id="color-${color}-${number}"
+      class="card__color-input card__color-input--${color} visually-hidden"
+      name="color"
+      value="${color}"/>
+    <label
+      for="color-${color}-${number}"
+      class="card__color card__color--${color}">
+      ${color}
+    </label>`;
+  let sumCardColorInput = ``;
+  COLOR.forEach((elem) => {
+    sumCardColorInput += cardColorInput(elem);
+  });
+
+  return `<article class="card card--pink card--repeat">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -59,79 +92,7 @@ export default (number) => `<article class="card card--pink card--repeat">
                       </button>
                       <fieldset class="card__repeat-days" disabled>
                         <div class="card__repeat-days-inner">
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-mo-${number}"
-                            name="repeat"
-                            value="mo"
-                          />
-                          <label class="card__repeat-day" for="repeat-mo-${number}"
-                            >mo</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-tu-${number}"
-                            name="repeat"
-                            value="tu"
-                            checked
-                          />
-                          <label class="card__repeat-day" for="repeat-tu-${number}"
-                            >tu</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-we-${number}"
-                            name="repeat"
-                            value="we"
-                          />
-                          <label class="card__repeat-day" for="repeat-we-${number}"
-                            >we</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-th-${number}"
-                            name="repeat"
-                            value="th"
-                          />
-                          <label class="card__repeat-day" for="repeat-th-${number}"
-                            >th</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-fr-${number}"
-                            name="repeat"
-                            value="fr"
-                            checked
-                          />
-                          <label class="card__repeat-day" for="repeat-fr-${number}"
-                            >fr</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            name="repeat"
-                            value="sa"
-                            id="repeat-sa-${number}"
-                          />
-                          <label class="card__repeat-day" for="repeat-sa-${number}"
-                            >sa</label
-                          >
-                          <input
-                            class="visually-hidden card__repeat-day-input"
-                            type="checkbox"
-                            id="repeat-su-${number}"
-                            name="repeat"
-                            value="su"
-                            checked
-                          />
-                          <label class="card__repeat-day" for="repeat-su-${number}"
-                            >su</label
-                          >
+                          ${sumRepeatDayInput}
                         </div>
                       </fieldset>
                     </div>
@@ -205,67 +166,7 @@ export default (number) => `<article class="card card--pink card--repeat">
                   <div class="card__colors-inner">
                     <h3 class="card__colors-title">Color</h3>
                     <div class="card__colors-wrap">
-                      <input
-                        type="radio"
-                        id="color-black-${number}"
-                        class="card__color-input card__color-input--black visually-hidden"
-                        name="color"
-                        value="black"
-                      />
-                      <label
-                        for="color-black-${number}"
-                        class="card__color card__color--black"
-                        >black</label
-                      >
-                      <input
-                        type="radio"
-                        id="color-yellow-${number}"
-                        class="card__color-input card__color-input--yellow visually-hidden"
-                        name="color"
-                        value="yellow"
-                      />
-                      <label
-                        for="color-yellow-${number}"
-                        class="card__color card__color--yellow"
-                        >yellow</label
-                      >
-                      <input
-                        type="radio"
-                        id="color-blue-${number}"
-                        class="card__color-input card__color-input--blue visually-hidden"
-                        name="color"
-                        value="blue"
-                      />
-                      <label
-                        for="color-blue-${number}"
-                        class="card__color card__color--blue"
-                        >blue</label
-                      >
-                      <input
-                        type="radio"
-                        id="color-green-${number}"
-                        class="card__color-input card__color-input--green visually-hidden"
-                        name="color"
-                        value="green"
-                      />
-                      <label
-                        for="color-green-${number}"
-                        class="card__color card__color--green"
-                        >green</label
-                      >
-                      <input
-                        type="radio"
-                        id="color-pink-${number}"
-                        class="card__color-input card__color-input--pink visually-hidden"
-                        name="color"
-                        value="pink"
-                        checked
-                      />
-                      <label
-                        for="color-pink-${number}"
-                        class="card__color card__color--pink"
-                        >pink</label
-                      >
+                    ${sumCardColorInput}
                     </div>
                   </div>
                 </div>
@@ -276,3 +177,4 @@ export default (number) => `<article class="card card--pink card--repeat">
               </div>
             </form>
           </article>`;
+};
