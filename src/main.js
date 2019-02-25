@@ -1,14 +1,19 @@
-const FILTERS_NAME = [`all`, `overdue`, `today`, `favorites`, `repeating`, `tags`, `archive`];
+import getFilterTemplate from './template/filter_template.js';
+import getTaskTemplate from './template/task_template.js';
+import {MockData, getMockCollection} from "./mock";
+
 const RANDOM_MAX = 10;
 
-import makeFilter from './make-filter.js';
-import makeTask from './make-task.js';
-
+/**
+ * Создание случайной последовательноси счетчика фильра.
+ * @param {number} count разрядность счетчика.
+ * @return {Array} массив счетчика фильра.
+ */
 const makeFilterCount = (count) => {
   let filterArray = [0];
-  for (let i = 1; i < FILTERS_NAME.length; i++) {
+  for (let i = 1; i < MockData.FILTERS_NAME.length; i++) {
     filterArray[i] = Math.floor(Math.random() * count);
-    if (i < FILTERS_NAME.length - 1) {
+    if (i < MockData.FILTERS_NAME.length - 1) {
       filterArray[0] += filterArray[i];
     }
   }
@@ -22,19 +27,25 @@ const removeCard = () => {
 };
 
 const filtersCount = makeFilterCount(RANDOM_MAX);
-
 const mainFilter = document.querySelector(`.main__filter`);
 const boardTasks = document.querySelector(`.board__tasks`);
 
+/**
+ * Вставка списка карточек задачь на страниу.
+ * @param {number} count Cards summ.
+ */
 const makeTasks = (count) => {
   removeCard();
-  for (let i = 1; i <= count; i++) {
-    boardTasks.insertAdjacentHTML(`beforeEnd`, makeTask(i));
+  const element = getMockCollection(count);
+  let fragment = ``;
+  for (let i = 0; i < count; i++) {
+    fragment += getTaskTemplate(element[i]);
   }
+  boardTasks.insertAdjacentHTML(`beforeEnd`, fragment);
 };
 
-FILTERS_NAME.forEach((elem, index) => {
-  mainFilter.insertAdjacentHTML(`beforeEnd`, makeFilter(elem, filtersCount[index], elem === `all`));
+MockData.FILTERS_NAME.forEach((elem, index) => {
+  mainFilter.insertAdjacentHTML(`beforeEnd`, getFilterTemplate(elem, filtersCount[index], elem === `all`));
 });
 
 

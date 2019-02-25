@@ -1,37 +1,31 @@
-export default (number) => {
-  const DAY = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
-  const COLOR = [`black`, `yellow`, `blue`, `green`, `pink`];
-  const repeatDayInput = (nameDay) => `<input
-      class="visually-hidden card__repeat-day-input"
-      type="checkbox"
-      id="repeat-${nameDay}-${number}"
-      name="repeat"
-      value="${nameDay}"/>
-      <label class="card__repeat-day" for="repeat-${nameDay}-${number}"
-      >${nameDay}</label
-      >`;
+import getHashtagElement from "./hashtag_template";
+import getRepeatDayInput from "./repeat_day_input_template";
+import getCardColorInput from "./card_colorInput_template";
+import {MockData} from "./../mock";
+
+/**
+ * Шаблон карточки задачи.
+ * @param {object} element Объект с данными для карточки задачи.
+ * @return {string} разметка HTML блока с карточкой задачи.
+ */
+export default (element) => {
+
   let sumRepeatDayInput = ``;
-  DAY.forEach((elem) => {
-    sumRepeatDayInput += repeatDayInput(elem);
+  MockData.DAY.forEach((elem) => {
+    sumRepeatDayInput += getRepeatDayInput(elem, element.number);
   });
 
-  const cardColorInput = (color) => `<input
-      type="radio"
-      id="color-${color}-${number}"
-      class="card__color-input card__color-input--${color} visually-hidden"
-      name="color"
-      value="${color}"/>
-    <label
-      for="color-${color}-${number}"
-      class="card__color card__color--${color}">
-      ${color}
-    </label>`;
   let sumCardColorInput = ``;
-  COLOR.forEach((elem) => {
-    sumCardColorInput += cardColorInput(elem);
+  MockData.COLORS.forEach((elem) => {
+    sumCardColorInput += getCardColorInput(elem, element.number);
   });
 
-  return `<article class="card card--pink card--repeat">
+  let hashtagList = ``;
+  element.hashtags.forEach((currentHashtag) => {
+    hashtagList = hashtagList + getHashtagElement(currentHashtag);
+  });
+
+  return `<article class="card card--${(element.color)} ${(element.isRepeat) ? `card--repeat` : ``}">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -43,7 +37,7 @@ export default (number) => {
                   </button>
                   <button
                     type="button"
-                    class="card__btn card__btn--favorites card__btn--disabled"
+                    class="card__btn card__btn--favorites ${(!element.isFavorite) ? `card__btn--disabled` : ``}"
                   >
                     favorites
                   </button>
@@ -59,7 +53,7 @@ export default (number) => {
                       class="card__text"
                       placeholder="Start typing your text here..."
                       name="text"
-                    >It is example of repeating task. It marks by wave.</textarea
+                    >${element.text}</textarea
                     >
                   </label>
                 </div>
@@ -69,21 +63,23 @@ export default (number) => {
                       <button class="card__date-deadline-toggle" type="button">
                         date: <span class="card__date-status">no</span>
                       </button>
-                      <fieldset class="card__date-deadline" disabled>
+                      <fieldset class="card__date-deadline" ${(element.isDeadline) ? `disabled` : ``}>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__date"
                             type="text"
-                            placeholder="23 September"
+                            placeholder="${element.data}"
                             name="date"
+                            value="${element.data}"
                           />
                         </label>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__time"
                             type="text"
-                            placeholder="11:15 PM"
+                            placeholder="${element.time}"
                             name="time"
+                            value="${element.time}"
                           />
                         </label>
                       </fieldset>
@@ -98,48 +94,7 @@ export default (number) => {
                     </div>
                     <div class="card__hashtag">
                       <div class="card__hashtag-list">
-                        <span class="card__hashtag-inner">
-                          <input
-                            type="hidden"
-                            name="hashtag"
-                            value="repeat"
-                            class="card__hashtag-hidden-input"
-                          />
-                          <button type="button" class="card__hashtag-name">
-                            #repeat
-                          </button>
-                          <button type="button" class="card__hashtag-delete">
-                            delete
-                          </button>
-                        </span>
-                        <span class="card__hashtag-inner">
-                          <input
-                            type="hidden"
-                            name="hashtag"
-                            value="repeat"
-                            class="card__hashtag-hidden-input"
-                          />
-                          <button type="button" class="card__hashtag-name">
-                            #cinema
-                          </button>
-                          <button type="button" class="card__hashtag-delete">
-                            delete
-                          </button>
-                        </span>
-                        <span class="card__hashtag-inner">
-                          <input
-                            type="hidden"
-                            name="hashtag"
-                            value="repeat"
-                            class="card__hashtag-hidden-input"
-                          />
-                          <button type="button" class="card__hashtag-name">
-                            #entertaiment
-                          </button>
-                          <button type="button" class="card__hashtag-delete">
-                            delete
-                          </button>
-                        </span>
+                        ${hashtagList}
                       </div>
                       <label>
                         <input
@@ -158,7 +113,7 @@ export default (number) => {
                       name="img"
                     />
                     <img
-                      src="img/add-photo.svg"
+                      src="${(element.image) ? element.image : ``}"
                       alt="task picture"
                       class="card__img"
                     />
