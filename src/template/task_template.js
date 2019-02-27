@@ -53,7 +53,7 @@ export default (element) => {
                       class="card__text"
                       placeholder="Start typing your text here..."
                       name="text"
-                    >${element.text}</textarea
+                    >${element.title}</textarea
                     >
                   </label>
                 </div>

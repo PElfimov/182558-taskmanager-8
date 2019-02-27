@@ -1,4 +1,4 @@
-import {getRandomInt, getRandomElement} from "./utils";
+import {getRandomInt, getRandomElement, getNormalDate} from "./utils";
 
 const MAX_HASHTAG_COUNT = 4;
 
@@ -8,13 +8,13 @@ const MockData = {
   COLORS: [`black`, `yellow`, `blue`, `green`, `pink`],
   FAVORITE: [true, false],
   REPEAT: [true, false],
-  TEXTS: [`This is example of new task, you can add picture, set date and time, add tags.`,
-    `It is example of repeating task. It marks by wave.`,
-    `This is card with missing deadline.`,
+  title: [`Изучить теорию.`,
+    `Сделать домашку.`,
+    `Пройти интенсив на соточку.`,
     `Here is a card with filled data.`,
     ``],
   DEADLINE: [true, false],
-  DATES: [`23 september`, `10 februaly`, `23 februaly`, `10 jule`, `13 april`],
+  dueDate: (Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000),
   TIMES: [`11:15 PM`, `10:00 AM`, `6:25 PM`, `0:01 AM`, `1:30 PM`, ``],
   IMAGES: [`img/sample-img.jpg`, ``],
   HASHTAGS: [`#repeat`, `#cinema`, `#entertaiment`, `#testing`]
@@ -41,13 +41,14 @@ const getMockCollection = (countCollection) => {
       color: getRandomElement(MockData.COLORS),
       isFavorite: getRandomElement(MockData.FAVORITE),
       isRepeat: getRandomElement(MockData.REPEAT),
-      text: getRandomElement(MockData.TEXTS),
+      title: getRandomElement(MockData.title),
       isDeadline: getRandomElement(MockData.DEADLINE),
-      data: getRandomElement(MockData.DATES),
+      data: new Date(MockData.dueDate).toDateString(),
       time: getRandomElement(MockData.TIMES),
       image: getRandomElement(MockData.IMAGES),
       hashtags: newHashtags,
     };
+    console.log(MockData.dueDate);
     collection.push(newElement);
   }
   return collection;
