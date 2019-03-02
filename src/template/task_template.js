@@ -11,9 +11,11 @@ import {MockData} from "./../mock";
 export default (element) => {
 
   let sumRepeatDayInput = ``;
-  MockData.DAY.forEach((elem) => {
-    sumRepeatDayInput += getRepeatDayInput(elem, element.number);
-  });
+  for (let key in MockData.dayRepeat) {
+    if (MockData.dayRepeat.hasOwnProperty(key)) {
+      sumRepeatDayInput += getRepeatDayInput(key, MockData.dayRepeat[key], element.number);
+    }
+  }
 
   let sumCardColorInput = ``;
   MockData.COLORS.forEach((elem) => {
@@ -84,9 +86,9 @@ export default (element) => {
                         </label>
                       </fieldset>
                       <button class="card__repeat-toggle" type="button">
-                        repeat:<span class="card__repeat-status">no</span>
+                        repeat:<span class="card__repeat-status">${(element.isRepeat) ? `yes` : `no`}</span>
                       </button>
-                      <fieldset class="card__repeat-days" disabled>
+                      <fieldset class="card__repeat-days" ${(element.isRepeat) ? `` : `disabled`} >
                         <div class="card__repeat-days-inner">
                           ${sumRepeatDayInput}
                         </div>
@@ -106,7 +108,7 @@ export default (element) => {
                       </label>
                     </div>
                   </div>
-                  <label class="card__img-wrap card__img-wrap--empty">
+                  <label class="card__img-wrap ${(element.image) ? `` : ` card__img-wrap--empty`}">
                     <input
                       type="file"
                       class="card__img-input visually-hidden"
