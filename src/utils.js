@@ -16,4 +16,5 @@ const getRandomInt = (min = MIN_COUNT, max = MAX_COUNT) => Math.floor(Math.rando
  */
 const getRandomElement = (collection) => collection[getRandomInt(0, collection.length)];
 
+
 export {getRandomInt, getRandomElement};
