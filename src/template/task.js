@@ -29,7 +29,7 @@ export default class Task {
   }
 
   _onEditButtonClick() {
-   typeof this._onEdit === `function` && this._onEdit();
+    typeof this._onEdit === `function` && this._onEdit();
   }
 
   get element() {
@@ -91,7 +91,7 @@ export default class Task {
     return hashtagList;
   }
 
-   get template() {
+  get template() {
     return `<article class="card card--${(this._color)} ${this._isRepeated() ? `card--repeat` : ``}">
             <form class="card__form" method="get">
               <div class="card__inner">
@@ -149,7 +149,7 @@ export default class Task {
                             value="${this._time}"
                           />
                         </label>
-                      </fieldset>s
+                      </fieldset>
                     </div>
                     <div class="card__hashtag">
                       <div class="card__hashtag-list">
