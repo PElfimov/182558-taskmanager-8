@@ -24,6 +24,7 @@ export default class Task {
 
   _onSubmitButtonClick(evt) {
     evt.preventDefault();
+    // eslint-disable-next-line no-unused-expressions
     typeof this._onSubmit === `function` && this._onSubmit();
   }
 
