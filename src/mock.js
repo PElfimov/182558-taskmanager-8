@@ -52,8 +52,9 @@ const getMockCollection = (countCollection) => {
     const newElement = {
       number: i,
       color: getRandomElement(MockData.color),
+      coloroColect: MockData.color,
       isFavorite: getRandomElement(MockData.favorite),
-      isRepeat: getRandomElement(MockData.REPEAT),
+      repeatingDays: MockData.repeatingDays,
       title: getRandomElement(MockData.title),
       isDeadline: getRandomElement(MockData.deadline),
       dueDate: new Date(getRandomElement(MockData.dueDate)).toDateString(),
