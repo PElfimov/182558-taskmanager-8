@@ -1,6 +1,10 @@
 import getFilterTemplate from './template/filter_template.js';
-import getTaskTemplate from './template/task_template.js';
-import {MockData, getMockCollection} from "./mock";
+import {
+  MockData,
+  getMockCollection
+} from "./mock";
+import Task from './template/task.js';
+import TaskEdit from './template/task-edit.js';
 
 const RANDOM_MAX = 10;
 
@@ -37,11 +41,24 @@ const boardTasks = document.querySelector(`.board__tasks`);
 const makeTasks = (count) => {
   removeCard();
   const element = getMockCollection(count);
-  let fragment = ``;
+  const tasksContainer = document.querySelector(`.board__tasks`);
   for (let i = 0; i < count; i++) {
-    fragment += getTaskTemplate(element[i]);
+    const taskComponent = new Task(element[i]);
+    const editTaskComponent = new TaskEdit(element[i]);
+    tasksContainer.appendChild(taskComponent.render());
+    taskComponent.onEdit = () => {
+      editTaskComponent.render();
+      tasksContainer.replaceChild(editTaskComponent.element, taskComponent.element);
+      taskComponent.unrender();
+    };
+
+    editTaskComponent.onSubmit = () => {
+      taskComponent.render();
+      tasksContainer.replaceChild(taskComponent.element, editTaskComponent.element);
+      editTaskComponent.unrender();
+    };
   }
-  boardTasks.insertAdjacentHTML(`beforeEnd`, fragment);
+
 };
 
 MockData.FILTERS_NAME.forEach((elem, index) => {
