@@ -1,9 +1,11 @@
+import Component from './component.js';
 /**
  * Модуль генерации карточки задачи
  * @module
  */
-export default class Task {
+export default class Task extends Component {
   constructor(data) {
+    super();
     this._title = data.title;
     this._image = data.image;
     this._dueDate = data.dueDate;
@@ -15,13 +17,9 @@ export default class Task {
     this._isDeadline = data.isDeadline;
     this._repeatingDays = data.repeatingDays;
     this._number = data.number;
-
-    this._element = null;
-    this._state = {
-      isEdit: false
-    };
-
     this._onEdit = null;
+
+    this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
 
   _isRepeated() {
@@ -33,32 +31,8 @@ export default class Task {
     typeof this._onEdit === `function` && this._onEdit();
   }
 
-  get element() {
-    return this._element;
-  }
-
   set onEdit(fn) {
     this._onEdit = fn;
-  }
-
-  _sumRepeatDayInput() {
-    const repeatDayInputTemplate = (nameDay, key, number) => `<input
-    class="visually-hidden card__repeat-day-input"
-    type="checkbox"
-    id="repeat-${nameDay}-${number}"
-    name="repeat"
-    value="${nameDay}"/ ${(key) ? `checked` : ``}>
-    <label class="card__repeat-day" for="repeat-${nameDay}-${number}"
-    >${nameDay}</label
-    >`;
-    let sumDayTemlate = ``;
-    const key = Object.keys(this._repeatingDays);
-    const kontext = this;
-    key.forEach((elem) => {
-      sumDayTemlate += repeatDayInputTemplate(elem, kontext._repeatingDays[elem], kontext._number);
-    });
-
-    return sumDayTemlate;
   }
 
   _hashtagList() {
@@ -94,7 +68,7 @@ export default class Task {
 
   get template() {
     return `<article class="card card--${(this._color)} ${this._isRepeated() ? `card--repeat` : ``}">
-            <form class="card__form" method="get">
+
               <div class="card__inner">
                 <div class="card__control">
                   <button type="button" class="card__btn card__btn--edit">
@@ -180,25 +154,17 @@ export default class Task {
                   </label>
                 </div>
               </div>
-            </form>
           </article>`;
   }
-
+  _createElement(template) {
+    const newElement = document.createElement(`div`);
+    newElement.innerHTML = template;
+    return newElement.firstChild;
+  }
 
   bind() {
     this._element.querySelector(`.card__btn--edit`)
       .addEventListener(`click`, this._onEditButtonClick.bind(this));
-  }
-
-  render() {
-    const createElement = (template) => {
-      const newElement = document.createElement(`div`);
-      newElement.innerHTML = template;
-      return newElement.firstChild;
-    };
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
   }
 
   unbind() {
@@ -206,8 +172,5 @@ export default class Task {
       .removeEventListener(`click`, this._onEditButtonClick);
   }
 
-  unrender() {
-    this.unbind();
-    this._element = null;
-  }
+
 }
