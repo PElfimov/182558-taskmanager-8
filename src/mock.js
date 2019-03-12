@@ -52,7 +52,6 @@ const getMockCollection = (countCollection) => {
     const newElement = {
       number: i,
       color: getRandomElement(MockData.color),
-      coloroColect: MockData.color,
       isFavorite: getRandomElement(MockData.favorite),
       repeatingDays: MockData.repeatingDays,
       title: getRandomElement(MockData.title),

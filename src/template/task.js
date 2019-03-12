@@ -12,7 +12,6 @@ export default class Task extends Component {
     this._time = data.time;
     this._tags = data.hashtags;
     this._color = data.color;
-    this._coloroColect = data.coloroColect;
     this._isFavorite = data.isFavorite;
     this._isDeadline = data.isDeadline;
     this._repeatingDays = data.repeatingDays;
@@ -172,5 +171,10 @@ export default class Task extends Component {
       .removeEventListener(`click`, this._onEditButtonClick);
   }
 
-
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
+  }
 }
