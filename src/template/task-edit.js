@@ -1,9 +1,12 @@
+import Component from './component.js';
+
 /**
  * Модуль генерации карточки задачи
  * @module
  */
-export default class Task {
+export default class TaskEdit extends Component {
   constructor(data) {
+    super();
     this._title = data.title;
     this._image = data.image;
     this._dueDate = data.dueDate;
@@ -15,8 +18,6 @@ export default class Task {
     this._isDeadline = data.isDeadline;
     this._repeatingDays = data.repeatingDays;
     this._number = data.number;
-
-    this._element = null;
     this._onSubmit = null;
 
   }
@@ -34,10 +35,6 @@ export default class Task {
 
   set onSubmit(fn) {
     this._onSubmit = fn;
-  }
-
-  get element() {
-    return this._element;
   }
 
   _sumRepeatDayInput() {
@@ -222,25 +219,11 @@ export default class Task {
             </form>
           </article>`;
   }
-  bind() {
-    this._element.querySelector(`.card__btn--edit`)
-      .addEventListener(`click`, this._onEditButtonClick.bind(this));
-  }
 
-  render() {
-    const createElement = (template) => {
-      const newElement = document.createElement(`div`);
-      newElement.innerHTML = template;
-      return newElement.firstChild;
-    };
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
+  _createElement(template) {
+    const newElement = document.createElement(`div`);
+    newElement.innerHTML = template;
+    return newElement.firstChild;
   }
 
   bind() {
