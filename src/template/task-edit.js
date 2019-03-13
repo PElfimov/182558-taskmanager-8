@@ -26,6 +26,7 @@ export default class TaskEdit extends Component {
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
+    this._onChangeColorInHeader = this._onChangeColorInHeader.bind(this);
   }
 
   _processForm(formData) {
@@ -45,9 +46,9 @@ export default class TaskEdit extends Component {
       }
     };
     const taskEditMapper = TaskEdit.createMapper(entry);
-
     for (const pair of formData.entries()) {
       const [property, value] = pair;
+      // eslint-disable-next-line no-unused-expressions
       taskEditMapper[property] && taskEditMapper[property](value);
     }
 
@@ -59,6 +60,7 @@ export default class TaskEdit extends Component {
     evt.preventDefault();
     const formData = new FormData(this._element.querySelector(`.card__form`));
     const newData = this._processForm(formData);
+    // eslint-disable-next-line no-unused-expressions
     typeof this._onSubmit === `function` && this._onSubmit(newData);
 
     this.update(newData);
@@ -78,12 +80,22 @@ export default class TaskEdit extends Component {
     this.bind();
   }
 
+  _onChangeColorInHeader(event) {
+    this._color = event.target.value;
+    this.unbind();
+    this._partialUpdate();
+    this.bind();
+  }
+
   _isRepeated() {
     return Object.values(this._repeatingDays).some((it) => it === true);
   }
 
   _partialUpdate() {
+    // debugger
     this._element.innerHTML = this.template;
+    // this._element.firstChild.remove();
+    // this._element.appendChild(this.render().firstChild);
   }
 
   set onSubmit(fn) {
@@ -157,13 +169,14 @@ export default class TaskEdit extends Component {
     let sumCardColorInput = ``;
     this._coloroColect.forEach((elem) => {
 
-      sumCardColorInput += getCardColorInput(elem, context.number);
+      sumCardColorInput += getCardColorInput(elem, context._number);
     });
 
     return sumCardColorInput;
   }
 
   get template() {
+    console.log(this._color);
     return `<article class="card card--edit  card--${(this._color)} ${this._isRepeated() ? `card--repeat` : ``}">
             <form class="card__form" method="get">
               <div class="card__inner">
@@ -286,7 +299,13 @@ export default class TaskEdit extends Component {
       .addEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
       .addEventListener(`click`, this._onChangeRepeated);
+    this._element.querySelectorAll(`.card__color-input`).forEach((elem) => {
+      elem.addEventListener(`click`, this._onChangeColorInHeader);
+
+    });
+
   }
+
 
   unbind() {
     this._element.querySelector(`.card__form`)
@@ -295,6 +314,9 @@ export default class TaskEdit extends Component {
       .removeEventListener(`click`, this._onChangeDate);
     this._element.querySelector(`.card__repeat-toggle`)
       .removeEventListener(`click`, this._onChangeRepeated);
+    this._element.querySelectorAll(`.card__color-input`).forEach((elem) => {
+      elem.removeEventListener(`click`, this._onChangeColorInHeader);
+    });
   }
 
   update(data) {
@@ -308,8 +330,11 @@ export default class TaskEdit extends Component {
   static createMapper(target) {
     return {
       hashtag: (value) => target.tags.add(value),
+      // eslint-disable-next-line no-return-assign
       text: (value) => target.title = value,
+      // eslint-disable-next-line no-return-assign
       color: (value) => target.color = value,
+      // eslint-disable-next-line no-return-assign
       repeat: (value) => target.repeatingDays[value] = true,
       date: (value) => target.dueDate[value],
 
