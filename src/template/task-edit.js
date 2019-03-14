@@ -1,5 +1,6 @@
 import Component from './component.js';
-
+import flatpickr from "flatpickr";
+import moment from "moment";
 /**
  * Модуль генерации карточки задачи
  * @module
@@ -14,14 +15,13 @@ export default class TaskEdit extends Component {
     this._tags = data.hashtags;
     this._color = data.color;
     this._isFavorite = data.isFavorite;
-    this._isDeadline = data.isDeadline;
     this._repeatingDays = data.repeatingDays;
     this._number = data.number;
     this._onSubmit = null;
 
     this._coloroColect = [`black`, `yellow`, `blue`, `green`, `pink`];
 
-    this._state.isDate = false;
+    this._state.isDate = data.isDeadline;
     this._state.isRepeated = false;
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
     this._onChangeDate = this._onChangeDate.bind(this);
@@ -43,15 +43,20 @@ export default class TaskEdit extends Component {
         'fr': false,
         'sa': false,
         'su': false,
-      }
+      },
+      isDeadline: ``,
     };
     const taskEditMapper = TaskEdit.createMapper(entry);
     for (const pair of formData.entries()) {
       const [property, value] = pair;
       // eslint-disable-next-line no-unused-expressions
+      console.log(pair);
+      // eslint-disable-next-line no-unused-expressions
       taskEditMapper[property] && taskEditMapper[property](value);
     }
-
+    // eslint-disable-next-line no-undef
+    taskEditMapper.isDeadline(this._state.isDate);
+    console.log(entry);
     return entry;
   }
 
@@ -62,7 +67,6 @@ export default class TaskEdit extends Component {
     const newData = this._processForm(formData);
     // eslint-disable-next-line no-unused-expressions
     typeof this._onSubmit === `function` && this._onSubmit(newData);
-
     this.update(newData);
   }
 
@@ -81,21 +85,21 @@ export default class TaskEdit extends Component {
   }
 
   _onChangeColorInHeader(event) {
+    this._changeClass(`card--${this._color}`, `card--${event.target.value}`);
     this._color = event.target.value;
-    this.unbind();
-    this._partialUpdate();
-    this.bind();
   }
 
   _isRepeated() {
     return Object.values(this._repeatingDays).some((it) => it === true);
   }
 
+  _changeClass(class1, class2) {
+    this._element.classList.remove(class1);
+    this._element.classList.add(class2);
+  }
+
   _partialUpdate() {
-    // debugger
-    this._element.innerHTML = this.template;
-    // this._element.firstChild.remove();
-    // this._element.appendChild(this.render().firstChild);
+    this._element.innerHTML = this._createElement(this.template).innerHTML;
   }
 
   set onSubmit(fn) {
@@ -176,7 +180,6 @@ export default class TaskEdit extends Component {
   }
 
   get template() {
-    console.log(this._color);
     return `<article class="card card--edit  card--${(this._color)} ${this._isRepeated() ? `card--repeat` : ``}">
             <form class="card__form" method="get">
               <div class="card__inner">
@@ -304,6 +307,21 @@ export default class TaskEdit extends Component {
 
     });
 
+    if (this._state.isDate) {
+      flatpickr(this._element.querySelector(`.card__date`), {
+        altInput: true,
+        altFormat: "F j, Y",
+        dateFormat: "Y-m-d",
+      });
+      flatpickr(this._element.querySelector(`.card__time`), {
+        enableTime: true,
+        noCalendar: true,
+        altInput: true,
+        altFormat: `h:i K`,
+        dateFormat: `h:i K`
+      });
+    }
+
   }
 
 
@@ -336,8 +354,10 @@ export default class TaskEdit extends Component {
       color: (value) => target.color = value,
       // eslint-disable-next-line no-return-assign
       repeat: (value) => target.repeatingDays[value] = true,
-      date: (value) => target.dueDate[value],
-
+      // eslint-disable-next-line no-return-assign
+      date: (value) => target.dueDate = moment(value, `YYYY-MM-DD`).toDate(),
+      // eslint-disable-next-line no-return-assign
+      isDeadline: (value) => target.isDeadline = value
     };
   }
 

@@ -53,14 +53,9 @@ const makeTasks = (count) => {
     };
 
     editTaskComponent.onSubmit = (newObject) => {
-      element[i].title = newObject.title;
-      element[i].tags = newObject.tags;
-      element[i].color = newObject.color;
-      element[i].repeatingDays = newObject.repeatingDays;
-      element[i].dueDate = newObject.dueDate;
+      element[i] = {...newObject};
 
       taskComponent.update(element[i]);
-
       taskComponent.render();
       tasksContainer.replaceChild(taskComponent.element, editTaskComponent.element);
       editTaskComponent.unrender();

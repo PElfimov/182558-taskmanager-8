@@ -13,10 +13,11 @@ export default class Task extends Component {
     this._tags = data.hashtags;
     this._color = data.color;
     this._isFavorite = data.isFavorite;
-    this._isDeadline = data.isDeadline;
     this._repeatingDays = data.repeatingDays;
     this._number = data.number;
     this._onEdit = null;
+
+    this._state.isDate = data.isDeadline;
 
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
@@ -104,7 +105,7 @@ export default class Task extends Component {
                       <button class="card__date-deadline-toggle" type="button">
                         date: <span class="card__date-status">no</span>
                       </button>
-                      <fieldset class="card__date-deadline" ${(this._isDeadline) ? `disabled` : ``}>
+                      <fieldset class="card__date-deadline" ${(this._state.isDate) ? `` : `disabled`}>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__date"
@@ -176,5 +177,8 @@ export default class Task extends Component {
     this._tags = data.tags;
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
+    this._state.isDate = data.isDeadline;
+    this._dueDate = data.dueDate;
+    console.log(data);
   }
 }
