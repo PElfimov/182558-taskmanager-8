@@ -178,7 +178,7 @@ export default class Task extends Component {
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
     this._state.isDate = data.isDeadline;
+    // eslint-disable-next-line no-unused-expressions
     data.dueDate && (this._dueDate = data.dueDate);
-    console.log(data);
   }
 }

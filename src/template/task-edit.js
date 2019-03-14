@@ -234,8 +234,7 @@ export default class TaskEdit extends Component {
                             type="text"
                             placeholder="${this.cardTime}"
                             name="time"
-                            value="${this.cardTime}"
-                          />
+                            value="${this.cardTime}" >
                         </label>
                       </fieldset>
                       <button class="card__repeat-toggle" type="button">
@@ -317,6 +316,8 @@ export default class TaskEdit extends Component {
         enableTime: true,
         noCalendar: true,
         altInput: true,
+        defaultHour: 15,
+        defaultMinute: 34,
         altFormat: `h:i K`,
         dateFormat: `h:i K`
       });
@@ -357,6 +358,16 @@ export default class TaskEdit extends Component {
       // eslint-disable-next-line no-return-assign
       date: (value) => target.dueDate = moment(value, `MMMM D, YYYY`).toDate(),
       // eslint-disable-next-line no-return-assign
+      time: (value) => {
+        console.log(`time is ` + value);
+        const time = moment(value, `h:mm A`);
+        const h = time.get('hour');
+        const m = time.get('minute');
+        console.log(h + ` ` + m);
+        const date = moment(target.dueDate);
+        console.log(date.set('hour', 13));
+
+      },
       isDeadline: (value) => target.isDeadline = value
     };
   }
