@@ -1,4 +1,5 @@
 import Component from './component.js';
+
 /**
  * Модуль генерации карточки задачи
  * @module
@@ -9,7 +10,6 @@ export default class Task extends Component {
     this._title = data.title;
     this._image = data.image;
     this._dueDate = data.dueDate;
-    this._time = data.time;
     this._tags = data.hashtags;
     this._color = data.color;
     this._isFavorite = data.isFavorite;
@@ -110,18 +110,18 @@ export default class Task extends Component {
                           <input
                             class="card__date"
                             type="text"
-                            placeholder="${this._dueDate}"
+                            placeholder="${this.cardDate}"
                             name="date"
-                            value="${this._dueDate}"
+                            value="${this.cardDate}"
                           />
                         </label>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__time"
                             type="text"
-                            placeholder="${this._time}"
+                            placeholder="${this.cardTime}"
                             name="time"
-                            value="${this._time}"
+                            value="${this.cardTime}"
                           />
                         </label>
                       </fieldset>
@@ -178,7 +178,7 @@ export default class Task extends Component {
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
     this._state.isDate = data.isDeadline;
-    this._dueDate = data.dueDate;
+    data.dueDate && (this._dueDate = data.dueDate);
     console.log(data);
   }
 }

@@ -56,7 +56,7 @@ const getMockCollection = (countCollection) => {
       repeatingDays: MockData.repeatingDays,
       title: getRandomElement(MockData.title),
       isDeadline: getRandomElement(MockData.deadline),
-      dueDate: new Date(getRandomElement(MockData.dueDate)).toDateString(),
+      dueDate: new Date(getRandomElement(MockData.dueDate)),
       time: getRandomElement(MockData.TIMES),
       image: getRandomElement(MockData.picture),
       hashtags: newHashtags,

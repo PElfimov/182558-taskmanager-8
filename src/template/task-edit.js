@@ -22,7 +22,7 @@ export default class TaskEdit extends Component {
     this._coloroColect = [`black`, `yellow`, `blue`, `green`, `pink`];
 
     this._state.isDate = data.isDeadline;
-    this._state.isRepeated = false;
+    this._state.isRepeated = this._isRepeated();
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
@@ -180,7 +180,7 @@ export default class TaskEdit extends Component {
   }
 
   get template() {
-    return `<article class="card card--edit  card--${(this._color)} ${this._isRepeated() ? `card--repeat` : ``}">
+    return `<article class="card card--edit  card--${(this._color)} ${this._state.isRepeated ? `card--repeat` : ``}">
             <form class="card__form" method="get">
               <div class="card__inner">
                 <div class="card__control">
@@ -223,18 +223,18 @@ export default class TaskEdit extends Component {
                           <input
                             class="card__date"
                             type="text"
-                            placeholder="${this._dueDate}"
+                            placeholder="${this.cardDate}"
                             name="date"
-                            value="${this._dueDate}"
+                            value="${this.cardDate}"
                           />
                         </label>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__time"
                             type="text"
-                            placeholder="${this._time}"
+                            placeholder="${this.cardTime}"
                             name="time"
-                            value="${this._time}"
+                            value="${this.cardTime}"
                           />
                         </label>
                       </fieldset>
@@ -310,8 +310,8 @@ export default class TaskEdit extends Component {
     if (this._state.isDate) {
       flatpickr(this._element.querySelector(`.card__date`), {
         altInput: true,
-        altFormat: "F j, Y",
-        dateFormat: "Y-m-d",
+        altFormat: `F j, Y`,
+        dateFormat: `F j, Y`,
       });
       flatpickr(this._element.querySelector(`.card__time`), {
         enableTime: true,
@@ -355,7 +355,7 @@ export default class TaskEdit extends Component {
       // eslint-disable-next-line no-return-assign
       repeat: (value) => target.repeatingDays[value] = true,
       // eslint-disable-next-line no-return-assign
-      date: (value) => target.dueDate = moment(value, `YYYY-MM-DD`).toDate(),
+      date: (value) => target.dueDate = moment(value, `MMMM D, YYYY`).toDate(),
       // eslint-disable-next-line no-return-assign
       isDeadline: (value) => target.isDeadline = value
     };
