@@ -50,13 +50,10 @@ export default class TaskEdit extends Component {
     for (const pair of formData.entries()) {
       const [property, value] = pair;
       // eslint-disable-next-line no-unused-expressions
-      console.log(pair);
-      // eslint-disable-next-line no-unused-expressions
       taskEditMapper[property] && taskEditMapper[property](value);
     }
     // eslint-disable-next-line no-undef
     taskEditMapper.isDeadline(this._state.isDate);
-    console.log(entry);
     return entry;
   }
 
@@ -311,6 +308,7 @@ export default class TaskEdit extends Component {
         altInput: true,
         altFormat: `F j, Y`,
         dateFormat: `F j, Y`,
+        defaultDate: this.cardDate,
       });
       flatpickr(this._element.querySelector(`.card__time`), {
         enableTime: true,
@@ -319,7 +317,8 @@ export default class TaskEdit extends Component {
         defaultHour: 15,
         defaultMinute: 34,
         altFormat: `h:i K`,
-        dateFormat: `h:i K`
+        dateFormat: `h:i K`,
+        defaultDate: this.cardTime,
       });
     }
 
@@ -359,15 +358,11 @@ export default class TaskEdit extends Component {
       date: (value) => target.dueDate = moment(value, `MMMM D, YYYY`).toDate(),
       // eslint-disable-next-line no-return-assign
       time: (value) => {
-        console.log(`time is ` + value);
-        const time = moment(value, `h:mm A`);
-        const h = time.get('hour');
-        const m = time.get('minute');
-        console.log(h + ` ` + m);
-        const date = moment(target.dueDate);
-        console.log(date.set('hour', 13));
-
+        const date = moment(target.dueDate).format(`MMMM D, YYYY`);
+        target.dueDate = moment((date + ` ` + value), `MMMM D, YYYY h:mm A`);
+        return target.dueDate;
       },
+      // eslint-disable-next-line no-return-assign
       isDeadline: (value) => target.isDeadline = value
     };
   }
