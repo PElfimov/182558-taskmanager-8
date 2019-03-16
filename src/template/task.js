@@ -1,4 +1,5 @@
 import Component from './component.js';
+
 /**
  * Модуль генерации карточки задачи
  * @module
@@ -9,15 +10,14 @@ export default class Task extends Component {
     this._title = data.title;
     this._image = data.image;
     this._dueDate = data.dueDate;
-    this._time = data.time;
     this._tags = data.hashtags;
     this._color = data.color;
-    this._coloroColect = data.coloroColect;
     this._isFavorite = data.isFavorite;
-    this._isDeadline = data.isDeadline;
     this._repeatingDays = data.repeatingDays;
     this._number = data.number;
     this._onEdit = null;
+
+    this._state.isDate = data.isDeadline;
 
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
@@ -105,23 +105,23 @@ export default class Task extends Component {
                       <button class="card__date-deadline-toggle" type="button">
                         date: <span class="card__date-status">no</span>
                       </button>
-                      <fieldset class="card__date-deadline" ${(this._isDeadline) ? `disabled` : ``}>
+                      <fieldset class="card__date-deadline" ${(this._state.isDate) ? `` : `disabled`}>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__date"
                             type="text"
-                            placeholder="${this._dueDate}"
+                            placeholder="${this.cardDate}"
                             name="date"
-                            value="${this._dueDate}"
+                            value="${this.cardDate}"
                           />
                         </label>
                         <label class="card__input-deadline-wrap">
                           <input
                             class="card__time"
                             type="text"
-                            placeholder="${this._time}"
+                            placeholder="${this.cardTime}"
                             name="time"
-                            value="${this._time}"
+                            value="${this.cardTime}"
                           />
                         </label>
                       </fieldset>
@@ -172,5 +172,13 @@ export default class Task extends Component {
       .removeEventListener(`click`, this._onEditButtonClick);
   }
 
-
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
+    this._state.isDate = data.isDeadline;
+    // eslint-disable-next-line no-unused-expressions
+    data.dueDate && (this._dueDate = data.dueDate);
+  }
 }

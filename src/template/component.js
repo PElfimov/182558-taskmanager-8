@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export default class Component {
   constructor() {
     if (new.target === Component) {
@@ -10,6 +12,13 @@ export default class Component {
 
   get element() {
     return this._element;
+  }
+
+  get cardDate() {
+    return moment(this._dueDate).format(`MMMM D, YYYY`);
+  }
+  get cardTime() {
+    return moment(this._dueDate).format(`h:mm A`);
   }
 
   get template() {
@@ -31,4 +40,8 @@ export default class Component {
     this._element.remove();
     this._element = null;
   }
+
+  update() {}
+
+
 }

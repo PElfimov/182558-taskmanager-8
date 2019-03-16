@@ -52,7 +52,10 @@ const makeTasks = (count) => {
       taskComponent.unrender();
     };
 
-    editTaskComponent.onSubmit = () => {
+    editTaskComponent.onSubmit = (newObject) => {
+      element[i] = {...newObject};
+
+      taskComponent.update(element[i]);
       taskComponent.render();
       tasksContainer.replaceChild(taskComponent.element, editTaskComponent.element);
       editTaskComponent.unrender();
